@@ -1,6 +1,6 @@
 <template>
   <div class="table">
-    <p>Total sum of currency {{currencySum}}</p>
+    <p>Total sum of currency {{ currencySum }}</p>
     <div>
       Search by
       <select v-model="currentSearchOption">
@@ -14,27 +14,6 @@
       </select>
       <input v-model="searchValue"/>
     </div>
-    <!--<div>-->
-      <!--Sort by-->
-      <!--<select v-model="currentSortingOption">-->
-        <!--<option-->
-            <!--v-for="(option, index) in searchOptions"-->
-            <!--:value="option"-->
-            <!--:key="`sorting-option-${index}`"-->
-        <!--&gt;-->
-          <!--{{option}}-->
-        <!--</option>-->
-      <!--</select>-->
-      <!--&lt;!&ndash;<select v-model="currentSortingState">&ndash;&gt;-->
-        <!--&lt;!&ndash;<option&ndash;&gt;-->
-            <!--&lt;!&ndash;v-for="(option, index) in sortingStateOptions"&ndash;&gt;-->
-            <!--&lt;!&ndash;:value="option"&ndash;&gt;-->
-            <!--&lt;!&ndash;:key="`sorting-state-${index}`"&ndash;&gt;-->
-        <!--&lt;!&ndash;&gt;&ndash;&gt;-->
-          <!--&lt;!&ndash;{{option}}&ndash;&gt;-->
-        <!--&lt;!&ndash;</option>&ndash;&gt;-->
-      <!--&lt;!&ndash;</select>&ndash;&gt;-->
-    <!--</div>-->
     <div>
       <button
         class="table__add-new-user"
@@ -49,44 +28,11 @@
         Sort by
       </th>
       <th @click="sortBy('name')">name
-        <!--<select @change="changeSortOption('name', $event)">-->
-          <!--<option value="none">-->
-            <!--none-->
-          <!--</option>-->
-          <!--<option value="up">-->
-            <!--up-->
-          <!--</option>-->
-          <!--<option value="down">-->
-            <!--down-->
-          <!--</option>-->
-        <!--</select>-->
       </th>
       <th @click="sortBy('location')">location
-        <!--<select @change="changeSortOption('location', $event)">-->
-          <!--<option value="none">-->
-            <!--none-->
-          <!--</option>-->
-          <!--<option value="up">-->
-            <!--up-->
-          <!--</option>-->
-          <!--<option value="down">-->
-            <!--down-->
-          <!--</option>-->
-        <!--</select>-->
       </th>
       <th @click="sortBy('currency')">
         currency
-        <!--<select @change="changeSortOption('currency', $event)">-->
-          <!--<option value="none">-->
-            <!--none-->
-          <!--</option>-->
-          <!--<option value="up">-->
-            <!--up-->
-          <!--</option>-->
-          <!--<option value="down">-->
-            <!--down-->
-          <!--</option>-->
-        <!--</select>-->
       </th>
       <th>
         action
@@ -104,9 +50,9 @@
             link to user
           </router-link>
         </td>
-        <td>{{user.name}}</td>
-        <td>{{user.location}}</td>
-        <td>{{user.currency}}</td>
+        <td><input v-model="user.name"/></td>
+        <td><input v-model="user.location"/></td>
+        <td><input v-model="user.currency"/></td>
         <td>
           <button @click="showEditUserModal(user)">edit</button>
           <button @click="removeUser(user.id)">delete</button>
@@ -171,8 +117,8 @@
           })
           .sort((a, b) => {
             return this.sortOrder === 'asc'
-              ? String(a[this.currentSortingOption]).localeCompare(String(b[this.currentSortingOption]), 'en', {numeric: true, sensitivity: 'base'})
-              : String(b[this.currentSortingOption]).localeCompare(String(a[this.currentSortingOption]), 'en', {numeric: true, sensitivity: 'base'})
+              ? String(a[this.currentSortingOption]).localeCompare(String(b[this.currentSortingOption]), 'en', { numeric: true, sensitivity: 'base' })
+              : String(b[this.currentSortingOption]).localeCompare(String(a[this.currentSortingOption]), 'en', { numeric: true, sensitivity: 'base' })
           })
         } else {
           return this.users
@@ -180,7 +126,7 @@
       },
       currencySum () {
         if (this.users.length) {
-          return this.users.reduce((sum, user) => sum + user.currency, 0)
+          return this.filteredUsers.reduce((sum, user) => sum + user.currency, 0)
         } else {
           return 0
         }

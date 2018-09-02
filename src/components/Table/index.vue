@@ -69,10 +69,9 @@
     </table>
     <edit-modal
       v-if="showModal"
-      :user="selectedUser"
-      :addUser="addUser"
+      :editableItem="selectedUser"
       @add="saveUser"
-      @edit="editUser"
+      @edit="editUserDetails"
       @close="showModal = false"
     />
   </div>
@@ -81,6 +80,13 @@
 <script>
   import editModal from '@/components/EditModal'
   import { mapActions, mapState } from 'vuex'
+
+  // TODO
+  // add icons to edit and remove
+  // add styles to input and button
+  // add validation
+  // refactor styles
+  // watch, which methods I can refactor
 
   export default {
     components: {
@@ -104,8 +110,7 @@
         sortOption: '',
         searchValue: '',
         showModal: false,
-        selectedUser: {},
-        addUser: false
+        selectedUser: {}
       }
     },
     computed: {
@@ -133,7 +138,11 @@
       }
     },
     methods: {
-      ...mapActions(['updateUser', 'getUsers', 'deleteUser', 'createUser']),
+      ...mapActions([
+        'createUser',
+        'editUser',
+        'deleteUser'
+      ]),
       sortBy (key) {
         if (key === this.currentSortingOption) {
           this.sortOrder = (this.sortOrder === 'asc') ? 'desc' : 'asc'
@@ -146,16 +155,15 @@
         this.showModal = true
         this.selectedUser = user
       },
-      async editUser (user) {
+      async editUserDetails (user) {
         user.currency = +user.currency || 0
-        await this.updateUser(user)
+        await this.editUser(user)
         this.showModal = false
       },
       async removeUser (userId) {
         this.deleteUser(userId)
       },
       showAddUserModal () {
-        this.addUser = true
         this.showEditUserModal()
       },
       async saveUser (user) {

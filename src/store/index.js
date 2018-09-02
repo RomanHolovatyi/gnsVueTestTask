@@ -14,17 +14,19 @@ const getters = {
 }
 
 const actions = {
-  createTableItem ({ commit }, newItem) {
+  createUser ({ commit }, newItem) {
     const newTableData = [ ...state.users, newItem ]
     commit(types.SET_USERS, newTableData)
   },
-  deleteTableItem ({ commit }, deletedItemId) {
+
+  deleteUser ({ commit }, deletedItemId) {
     const newTableData = state.users.filter((tableItem) => {
       return (deletedItemId !== tableItem.id)
     })
     commit(types.SET_USERS, newTableData)
   },
-  editTableItem ({ commit }, editedItem) {
+
+  editUser ({ commit }, editedItem) {
     const newTableData = state.users.map((tableItem) => {
       if (tableItem.id === editedItem.id) {
         tableItem = { ...editedItem }
@@ -38,7 +40,7 @@ const actions = {
 const mutations = {
   [types.SET_USERS] (state, newTableData) {
     localStorage.setItem('usersList', JSON.stringify([ ...newTableData ]))
-    state.tableData = [ ...newTableData ]
+    state.users = [ ...newTableData ]
   }
 }
 

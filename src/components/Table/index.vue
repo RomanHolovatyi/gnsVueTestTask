@@ -2,7 +2,7 @@
   <div class="table">
     <p>Total sum of currency {{currencySum}}</p>
     <div>
-      Filter by
+      Search by
       <select v-model="currentSearchOption">
         <option
           v-for="(option, index) in searchOptions"
@@ -14,6 +14,27 @@
       </select>
       <input v-model="searchValue"/>
     </div>
+    <!--<div>-->
+      <!--Sort by-->
+      <!--<select v-model="currentSortingOption">-->
+        <!--<option-->
+            <!--v-for="(option, index) in searchOptions"-->
+            <!--:value="option"-->
+            <!--:key="`sorting-option-${index}`"-->
+        <!--&gt;-->
+          <!--{{option}}-->
+        <!--</option>-->
+      <!--</select>-->
+      <!--&lt;!&ndash;<select v-model="currentSortingState">&ndash;&gt;-->
+        <!--&lt;!&ndash;<option&ndash;&gt;-->
+            <!--&lt;!&ndash;v-for="(option, index) in sortingStateOptions"&ndash;&gt;-->
+            <!--&lt;!&ndash;:value="option"&ndash;&gt;-->
+            <!--&lt;!&ndash;:key="`sorting-state-${index}`"&ndash;&gt;-->
+        <!--&lt;!&ndash;&gt;&ndash;&gt;-->
+          <!--&lt;!&ndash;{{option}}&ndash;&gt;-->
+        <!--&lt;!&ndash;</option>&ndash;&gt;-->
+      <!--&lt;!&ndash;</select>&ndash;&gt;-->
+    <!--</div>-->
     <div>
       <button
         class="table__add-new-user"
@@ -27,7 +48,7 @@
       <th>
         Sort by
       </th>
-      <th>name
+      <th @click.native="sortBy('name')">name
         <!--<select @change="changeSortOption('name', $event)">-->
           <!--<option value="none">-->
             <!--none-->
@@ -78,7 +99,7 @@
       >
         <td>
           <router-link
-            :to="{ name: 'TableItemDetails', params: { id: user.id }}"
+            :to="{ path: `/table-item-details/${user.id}` }"
           >
             link to user
           </router-link>
@@ -126,8 +147,15 @@
           'name',
           'location'
         ],
+        sortingStateOptions: [
+          'none',
+          'up',
+          'down'
+        ],
         currentSearchOption: 'name',
-        currentSortField: '',
+        sortOrder: '',
+        currentSortingOption: '',
+        currentSortingState: '',
         sortOption: '',
         searchValue: '',
         showModal: false,
@@ -139,10 +167,15 @@
       ...mapState(['users']),
       filteredUsers () {
         if (this.searchValue) {
-          const searchingUsers = this.users.filter((user) => {
+          return this.users.filter((user) => {
             return (user[this.currentSearchOption].includes(this.searchValue))
           })
-          return searchingUsers
+            .sort((a, b) => {
+              if (this.sortOrder === 'asc') {
+                return a[this.currentSortingState] >= b[this.currentSortingState];
+              }
+              return a[this.currentSortingState] <= b[this.currentSortingState];
+            })
         } else {
           return this.users
         }
@@ -153,6 +186,39 @@
         } else {
           return 0
         }
+      }
+    },
+    methods: {
+      ...mapActions(['updateUser', 'getUsers', 'deleteUser', 'createUser']),
+      sortBy (key) {
+        console.log('wefwef')
+        if (key === this.currentSortingState) {
+          this.sortOrder = (this.sortOrder === 'asc') ? 'desc' : 'asc';
+        } else {
+          this.currentSortingState = key;
+          this.sortOrder = 'asc';
+        }
+      },
+      showEditUserModal (user) {
+        this.showModal = true
+        this.selectedUser = user
+      },
+      async editUser (user) {
+        user.currency = +user.currency || 0
+        await this.updateUser(user)
+        this.showModal = false
+      },
+      async removeUser (userId) {
+        this.deleteUser(userId)
+      },
+      showAddUserModal () {
+        this.addUser = true
+        this.showEditUserModal()
+      },
+      async saveUser (user) {
+        user.currency = +user.currency || 0
+        await this.createUser(user)
+        this.showModal = false
       }
     }
   }

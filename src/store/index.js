@@ -1,17 +1,27 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import users from '@/test.json'
+// import * as types from './mutation-types'
 
 Vue.use(Vuex)
 
+const state = {
+  users: users
+}
+
+const getters = {
+  getUserById: state => id => state.users.find(item => item.id === id)
+}
+
+const actions = {
+}
+
+const mutations = {
+}
+
 export default new Vuex.Store({
-  state: {
-    users: users
-  },
-  mutations: {
-
-  },
-  actions: {
-
-  }
+  state,
+  actions,
+  mutations,
+  getters
 })

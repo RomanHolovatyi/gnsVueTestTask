@@ -61,7 +61,7 @@
           <!--</option>-->
         <!--</select>-->
       </th>
-      <th>location
+      <th @click="sortBy('location')">location
         <!--<select @change="changeSortOption('location', $event)">-->
           <!--<option value="none">-->
             <!--none-->
@@ -74,7 +74,7 @@
           <!--</option>-->
         <!--</select>-->
       </th>
-      <th>
+      <th @click="sortBy('currency')">
         currency
         <!--<select @change="changeSortOption('currency', $event)">-->
           <!--<option value="none">-->
@@ -155,7 +155,6 @@
         currentSearchOption: 'name',
         sortOrder: '',
         currentSortingOption: '',
-        currentSortingState: '',
         sortOption: '',
         searchValue: '',
         showModal: false,
@@ -166,14 +165,14 @@
     computed: {
       ...mapState(['users']),
       filteredUsers () {
-        if (this.searchValue || this.currentSortingState) {
+        if (this.searchValue || this.currentSortingOption) {
           return this.users.filter((user) => {
             return (user[this.currentSearchOption].includes(this.searchValue))
           })
           .sort((a, b) => {
             return this.sortOrder === 'asc'
-              ? a.name.localeCompare(b.name)
-              : b.name.localeCompare(a.name)
+              ? String(a[this.currentSortingOption]).localeCompare(String(b[this.currentSortingOption]), 'en', {numeric: true, sensitivity: 'base'})
+              : String(b[this.currentSortingOption]).localeCompare(String(a[this.currentSortingOption]), 'en', {numeric: true, sensitivity: 'base'})
           })
         } else {
           return this.users
@@ -190,10 +189,10 @@
     methods: {
       ...mapActions(['updateUser', 'getUsers', 'deleteUser', 'createUser']),
       sortBy (key) {
-        if (key === this.currentSortingState) {
+        if (key === this.currentSortingOption) {
           this.sortOrder = (this.sortOrder === 'asc') ? 'desc' : 'asc'
         } else {
-          this.currentSortingState = key
+          this.currentSortingOption = key
           this.sortOrder = 'asc'
         }
       },

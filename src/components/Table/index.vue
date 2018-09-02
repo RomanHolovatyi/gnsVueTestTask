@@ -48,7 +48,7 @@
       <th>
         Sort by
       </th>
-      <th @click.native="sortBy('name')">name
+      <th @click="sortBy('name')">name
         <!--<select @change="changeSortOption('name', $event)">-->
           <!--<option value="none">-->
             <!--none-->
@@ -166,16 +166,15 @@
     computed: {
       ...mapState(['users']),
       filteredUsers () {
-        if (this.searchValue) {
+        if (this.searchValue || this.currentSortingState) {
           return this.users.filter((user) => {
             return (user[this.currentSearchOption].includes(this.searchValue))
           })
-            .sort((a, b) => {
-              if (this.sortOrder === 'asc') {
-                return a[this.currentSortingState] >= b[this.currentSortingState];
-              }
-              return a[this.currentSortingState] <= b[this.currentSortingState];
-            })
+          .sort((a, b) => {
+            return this.sortOrder === 'asc'
+              ? a.name.localeCompare(b.name)
+              : b.name.localeCompare(a.name)
+          })
         } else {
           return this.users
         }
@@ -191,12 +190,11 @@
     methods: {
       ...mapActions(['updateUser', 'getUsers', 'deleteUser', 'createUser']),
       sortBy (key) {
-        console.log('wefwef')
         if (key === this.currentSortingState) {
-          this.sortOrder = (this.sortOrder === 'asc') ? 'desc' : 'asc';
+          this.sortOrder = (this.sortOrder === 'asc') ? 'desc' : 'asc'
         } else {
-          this.currentSortingState = key;
-          this.sortOrder = 'asc';
+          this.currentSortingState = key
+          this.sortOrder = 'asc'
         }
       },
       showEditUserModal (user) {

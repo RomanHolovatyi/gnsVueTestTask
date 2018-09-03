@@ -31,19 +31,31 @@
         class="users__table-heading"
         @click="sortBy('name')"
       >
-        Name
+        <div>
+          Name
+          <span v-if="isAsc('name')">&#x25BC;</span>
+          <span v-if="isDesc('name')">&#x25B2;</span>
+        </div>
       </th>
       <th
         class="users__table-heading"
         @click="sortBy('location')"
       >
-        Location
+        <div>
+          Location
+          <span v-if="isAsc('location')">&#x25BC;</span>
+          <span v-if="isDesc('location')">&#x25B2;</span>
+        </div>
       </th>
       <th
         class="users__table-heading"
         @click="sortBy('currency')"
       >
-        Currency
+        <div>
+          Currency
+          <span v-if="isAsc('currency')">&#x25BC;</span>
+          <span v-if="isDesc('currency')">&#x25B2;</span>
+        </div>
       </th>
       <th class="users__table-heading">
         Action
@@ -72,14 +84,14 @@
             class="users__action-button"
             @click.native="showEditUserModal(user)"
           >
-            edit
+            Edit
           </a-button>
           <a-button
             backgroundColor="red"
             class="users__action-button"
             @click.native="removeUser(user.id)"
           >
-            delete
+            Delete
           </a-button>
         </td>
       </tr>
@@ -107,7 +119,6 @@
   import { mapActions, mapState } from 'vuex'
 
   // TODO
-  // add validation
   // refactor styles
   // watch, which methods I can refactor
 
@@ -174,6 +185,12 @@
           this.currentSortingOption = key
           this.sortOrder = 'asc'
         }
+      },
+      isAsc (field) {
+        return this.currentSortingOption === field && this.sortOrder === 'asc'
+      },
+      isDesc (field) {
+        return this.currentSortingOption === field && this.sortOrder === 'desc'
       },
       openDetailsPage (id) {
         this.$router.push({ path: `/table-item-details/${id}` })

@@ -1,8 +1,12 @@
 <template>
   <div class="user">
     <h1>User Details</h1>
-    <p v-for="(value, key) of userDetails" :key="key">
-      <strong>{{key}}</strong>: {{value}}
+    <p
+      v-for="(value, key) of userDetails"
+      :key="key"
+      class="user__row"
+    >
+      <span class="user__key">{{key}}</span>: {{value}}
     </p>
     <a-button
       backgroundColor="red"
@@ -46,8 +50,14 @@
     max-width: 400px;
     margin: 0 auto;
 
-    p {
+    &__key {
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    &__row {
       text-align: left;
+      font-size: 18px;
     }
   }
 </style>

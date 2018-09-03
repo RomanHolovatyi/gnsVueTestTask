@@ -9,7 +9,7 @@
           :value="option"
           :key="`search-option-${index}`"
         >
-          {{option}}
+          {{ option }}
         </option>
       </select>
       <input v-model="searchValue"/>
@@ -97,12 +97,6 @@
         </td>
       </tr>
       </tbody>
-      <tbody
-        v-else
-        class="users__table--no-items"
-      >
-      <p>no users</p>
-      </tbody>
     </table>
     <edit-modal
       v-if="showModal"
@@ -161,11 +155,9 @@
         }
       },
       currencySum () {
-        if (this.users.length) {
-          return this.filteredUsers.reduce((sum, user) => sum + user.currency, 0)
-        } else {
-          return 0
-        }
+        return this.filteredUsers.length
+          ? this.filteredUsers.reduce((sum, user) => sum + user.currency, 0)
+          : 0
       }
     },
     methods: {
@@ -200,7 +192,7 @@
         await this.editUser(user)
         this.showModal = false
       },
-      async removeUser (userId) {
+      removeUser (userId) {
         this.deleteUser(userId)
       },
       showAddUserModal () {

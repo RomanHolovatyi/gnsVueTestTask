@@ -84,12 +84,11 @@
         </td>
       </tr>
       </tbody>
-      <tbody v-else>
-      <tr>
-        <h2>
-          no users
-        </h2>
-      </tr>
+      <tbody
+        v-else
+        class="users__table--no-items"
+      >
+      <p>no users</p>
       </tbody>
     </table>
     <edit-modal
@@ -108,8 +107,6 @@
   import { mapActions, mapState } from 'vuex'
 
   // TODO
-  // add icons to edit and remove
-  // add styles to input and button
   // add validation
   // refactor styles
   // watch, which methods I can refactor
@@ -212,6 +209,10 @@
       font-size: 14px;
       margin: 20px auto;
       width: 80%;
+
+      &--no-items {
+        text-align: center;
+      }
     }
 
     &__table-heading {

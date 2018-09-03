@@ -15,17 +15,17 @@
       <input v-model="searchValue"/>
     </div>
     <div>
-      <button
-        class="users__button"
+      <a-button
+        backgroundColor="blue"
         @click="showAddUserModal"
       >
         Add user
-      </button>
+      </a-button>
     </div>
     <table class="users__table">
       <thead>
       <th class="users__table-heading">
-        Open details
+        Details
       </th>
       <th
         class="users__table-heading"
@@ -56,18 +56,31 @@
         class="users__table-row"
       >
         <td class="users__table-cell">
-          <router-link
-            :to="{ path: `/table-item-details/${user.id}` }"
+          <a-button
+            backgroundColor="blue"
+            @click="openDetailsPage(user.id)"
           >
-            link to user
-          </router-link>
+            Open details
+          </a-button>
         </td>
         <td class="users__table-cell">{{ user.name }}</td>
         <td class="users__table-cell">{{ user.location }}</td>
         <td class="users__table-cell">{{ user.currency }}</td>
         <td class="users__table-cell">
-          <button @click="showEditUserModal(user)">edit</button>
-          <button @click="removeUser(user.id)">delete</button>
+          <a-button
+            backgroundColor="green"
+            class="users__action-button"
+            @click.native="showEditUserModal(user)"
+          >
+            edit
+          </a-button>
+          <a-button
+            backgroundColor="red"
+            class="users__action-button"
+            @click.native="removeUser(user.id)"
+          >
+            delete
+          </a-button>
         </td>
       </tr>
       </tbody>
@@ -91,6 +104,7 @@
 
 <script>
   import editModal from '@/components/EditModal'
+  import AButton from '@/components/shared/AButton'
   import { mapActions, mapState } from 'vuex'
 
   // TODO
@@ -101,10 +115,11 @@
   // watch, which methods I can refactor
 
   export default {
-    components: {
-      editModal
-    },
     name: 'Table',
+    components: {
+      editModal,
+      AButton
+    },
     data () {
       return {
         searchOptions: [
@@ -162,6 +177,9 @@
           this.currentSortingOption = key
           this.sortOrder = 'asc'
         }
+      },
+      openDetailsPage (id) {
+        this.$router.push({ path: `/table-item-details/${id}` })
       },
       showEditUserModal (user) {
         this.showModal = true
@@ -222,6 +240,10 @@
       width: 20%;
       border: 1px solid #ddd;
       padding: 8px;
+    }
+
+    &__action-button {
+      margin: 0 5px;
     }
   }
 

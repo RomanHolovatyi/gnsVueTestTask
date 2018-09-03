@@ -17,7 +17,7 @@
     <div>
       <a-button
         backgroundColor="blue"
-        @click="showAddUserModal"
+        @click.native="showAddUserModal"
       >
         Add user
       </a-button>
@@ -58,7 +58,7 @@
         <td class="users__table-cell">
           <a-button
             backgroundColor="blue"
-            @click="openDetailsPage(user.id)"
+            @click.native="openDetailsPage(user.id)"
           >
             Open details
           </a-button>
@@ -206,10 +206,6 @@
 </script>
 
 <style lang="scss" scoped>
-  h1, h2 {
-    font-weight: normal;
-  }
-
   .users {
     &__table {
       border-collapse: collapse;

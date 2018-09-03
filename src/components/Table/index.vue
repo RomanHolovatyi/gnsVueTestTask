@@ -17,6 +17,7 @@
     <div>
       <a-button
         backgroundColor="blue"
+        class="users__add-user-button"
         @click.native="showAddUserModal"
       >
         Add user
@@ -28,7 +29,7 @@
         Details
       </th>
       <th
-        class="users__table-heading"
+        class="users__table-heading users__table-heading--can-sorts"
         @click="sortBy('name')"
       >
         <div>
@@ -38,7 +39,7 @@
         </div>
       </th>
       <th
-        class="users__table-heading"
+        class="users__table-heading users__table-heading--can-sorts"
         @click="sortBy('location')"
       >
         <div>
@@ -48,7 +49,7 @@
         </div>
       </th>
       <th
-        class="users__table-heading"
+        class="users__table-heading users__table-heading--can-sorts"
         @click="sortBy('currency')"
       >
         <div>
@@ -118,10 +119,6 @@
   import AButton from '@/components/shared/AButton'
   import { mapActions, mapState } from 'vuex'
 
-  // TODO
-  // refactor styles
-  // watch, which methods I can refactor
-
   export default {
     name: 'Table',
     components: {
@@ -140,9 +137,8 @@
           'down'
         ],
         currentSearchOption: 'name',
-        sortOrder: '',
-        currentSortingOption: '',
-        sortOption: '',
+        sortOrder: 'asc',
+        currentSortingOption: 'name',
         searchValue: '',
         showModal: false,
         selectedUser: {}
@@ -232,11 +228,19 @@
       }
     }
 
+    &__add-user-button {
+      margin-top: 15px;
+    }
+
     &__table-heading {
       text-align: center;
       background-color: #4CAF50;
       color: white;
       font-size: 20px;
+
+      &--can-sorts {
+        cursor: pointer;
+      }
     }
 
     &__table-row {
@@ -259,9 +263,5 @@
     &__action-button {
       margin: 0 5px;
     }
-  }
-
-  a {
-    color: #42b983;
   }
 </style>

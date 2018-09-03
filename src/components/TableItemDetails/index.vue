@@ -1,17 +1,27 @@
 <template>
-  <div class="user-wrapper">
-    <h1>Single user page</h1>
+  <div class="user">
+    <h1>User Details</h1>
     <p v-for="(value, key) of userDetails" :key="key">
-      <b>{{key}}</b> : {{value}}
+      <strong>{{key}}</strong>: {{value}}
     </p>
+    <a-button
+      backgroundColor="red"
+      @click.native="redirectToHome"
+    >
+      Back
+    </a-button>
   </div>
 </template>
 
 <script>
   import { mapGetters } from 'vuex'
+  import AButton from '@/components/shared/AButton'
 
   export default {
     name: 'user',
+    components: {
+      AButton
+    },
     data () {
       return {
         userDetails: {}
@@ -19,6 +29,11 @@
     },
     computed: {
       ...mapGetters(['getUserById'])
+    },
+    methods: {
+      redirectToHome () {
+        this.$router.push({ path: '/' })
+      }
     },
     mounted () {
       this.userDetails = this.getUserById(this.$route.params.id)
@@ -28,12 +43,11 @@
 
 <style lang="scss" scoped>
   .user {
-    &-wrapper {
-      max-width: 400px;
-      margin: 0 auto;
-      p {
-        text-align: left;
-      }
+    max-width: 400px;
+    margin: 0 auto;
+
+    p {
+      text-align: left;
     }
   }
 </style>

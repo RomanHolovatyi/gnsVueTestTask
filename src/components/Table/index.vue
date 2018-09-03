@@ -1,7 +1,7 @@
 <template>
-  <div class="table">
+  <div class="users">
     <p>Total sum of currency {{ currencySum }}</p>
-    <div>
+    <div class="users__search">
       Search by
       <select v-model="currentSearchOption">
         <option
@@ -16,44 +16,56 @@
     </div>
     <div>
       <button
-        class="table__add-new-user"
+        class="users__button"
         @click="showAddUserModal"
       >
-        add user
+        Add user
       </button>
     </div>
-    <table class="users-table">
+    <table class="users__table">
       <thead>
-      <th>
-        Sort by
+      <th class="users__table-heading">
+        Open details
       </th>
-      <th @click="sortBy('name')">name
+      <th
+        class="users__table-heading"
+        @click="sortBy('name')"
+      >
+        Name
       </th>
-      <th @click="sortBy('location')">location
+      <th
+        class="users__table-heading"
+        @click="sortBy('location')"
+      >
+        Location
       </th>
-      <th @click="sortBy('currency')">
-        currency
+      <th
+        class="users__table-heading"
+        @click="sortBy('currency')"
+      >
+        Currency
       </th>
-      <th>
-        action
+      <th class="users__table-heading">
+        Action
       </th>
       </thead>
       <tbody v-if="filteredUsers.length">
       <tr
         v-for="user in filteredUsers"
         :key="user.id"
+        class="users__table-row"
       >
-        <td>
+        <td class="users__table-cell">
           <router-link
             :to="{ path: `/table-item-details/${user.id}` }"
           >
             link to user
           </router-link>
         </td>
-        <td><input v-model="user.name"/></td>
-        <td><input v-model="user.location"/></td>
-        <td><input v-model="user.currency"/></td>
-        <td>
+        <td class="users__table-cell">{{ user.name }}</td>
+        <td class="users__table-cell">{{ user.location }}</td>
+        <td class="users__table-cell">{{ user.currency }}</td>
+        <td class="users__table-cell">
           <button @click="showEditUserModal(user)">edit</button>
           <button @click="removeUser(user.id)">delete</button>
         </td>
@@ -180,55 +192,40 @@
     font-weight: normal;
   }
 
-  table {
-    font-family:sans-serif;
-    border-collapse: collapse;
-    font-size:14px;
-    margin: 20px auto;
-  }
-
-  table, th, td {
-    border: 1px solid white;
-  }
-
-  table th, table td{
-    padding:10px;
-  }
-
-  table th{
-    color:white;
-    background:black;
-    font-size:18px;
-  }
-
-  table.greyscale{
-    tr:nth-child(even){
-      background:#d2d5d5;
+  .users {
+    &__table {
+      border-collapse: collapse;
+      font-size: 14px;
+      margin: 20px auto;
+      width: 80%;
     }
-    tr:nth-child(odd){
-      background:#e9eaea;
-    }
-  }
 
-  table.colorscale{
-    tr:nth-child(even){
-      background:#d3d26e;
+    &__table-heading {
+      text-align: center;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 20px;
     }
-    tr:nth-child(odd){
-      background:#ECECC1;
+
+    &__table-row {
+      &:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+
+      &:hover {
+        background-color: #ddd;
+      }
+    }
+
+    &__table-heading,
+    &__table-cell {
+      width: 20%;
+      border: 1px solid #ddd;
+      padding: 8px;
     }
   }
 
   a {
     color: #42b983;
-  }
-
-  .add-new-user {
-    margin: 20px auto 0;
-    background-color: #42b983;
-    color: white;
-    font-size: 18px;
-    width: 200px;
-    height: 30px;
   }
 </style>

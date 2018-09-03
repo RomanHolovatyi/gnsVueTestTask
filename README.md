@@ -2,7 +2,7 @@
 
 ## Demo
 ```
-http://gns-vue-test-rh.surge.sh
+[http://gns-vue-test-rh.surge.sh](http://gns-vue-test-rh.surge.sh)
 ```
 
 ## Project setup
